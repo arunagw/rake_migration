@@ -1,3 +1,12 @@
 require 'rubygems'
+gem 'activesupport', '~> 2.3.4'
+gem 'activerecord', '~> 2.3.4'
+gem 'actionpack', '~> 2.3.4'
+gem 'rails', '~> 2.3.4'
 require 'active_support'
 require 'active_support/test_case'
+require "active_record"
+require 'yaml'
+require File.dirname(__FILE__) + '/../models/blog'
+require File.dirname(__FILE__) + '/../models/user'
+RAILS_ENV = 'test'
