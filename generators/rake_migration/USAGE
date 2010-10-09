@@ -1,0 +1,21 @@
+Usage: script/generate rake_migration FileName 
+
+Description:
+    Stubs out a new rake migration. Pass the file name, either
+    
+    A file is generated in rake/migrate prefixed by a timestamp of the current date and time.
+
+
+Example:
+    `./script/generate rake_migration SetAllUserActive`
+
+    If the current date is May 14, 2008 and the current time 09:09:12, this creates
+    rake/migrate/20080514090912_set_all_user_active.rb
+
+    If our User Model having a boolean column for active. 
+   
+    # Can add this code in file to update set user as active. 
+    #User.all.each do |u|
+    #  u.update_attribute(:active, true)
+    #end
+    
