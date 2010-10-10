@@ -3,9 +3,22 @@ require File.dirname(__FILE__) + '/test_helper'
 TEST_ROOT       = File.expand_path(File.dirname(__FILE__))
 RAKE_MIGRATIONS_ROOT = TEST_ROOT + "/rake_migrations"
 
-dbconfig = YAML.load(File.read("./../../../config/database.yml"))[RAILS_ENV]
 
-ActiveRecord::Base.establish_connection(dbconfig)
+ActiveRecord::Base.configurations = {
+  'db1' => {
+  :adapter  => 'mysql',
+  :username => 'root',
+  :encoding => 'utf8',
+  :database => 'rake_migration_test1',
+},
+'db2' => {
+  :adapter  => 'mysql',
+  :username => 'root',
+  :database => 'rake_migration_test2'
+}
+}
+
+ActiveRecord::Base.establish_connection('db1')
 
 
 #If DB Migrations works then rake_migration will also work.
@@ -23,8 +36,8 @@ if ActiveRecord::Base.connection.supports_migrations?
       end
     end
   end
-
-  class RakeMigrationTest < Test::Unit::TestCase
+  
+  class RakeMigrationTest < ActiveRecord::TestCase
 
     def setup
       ActiveRecord::RakeMigration.verbose = true

@@ -1,8 +1,8 @@
 require 'rubygems'
-gem 'activesupport', '~> 2.3.4'
-gem 'activerecord', '~> 2.3.4'
-gem 'actionpack', '~> 2.3.4'
-gem 'rails', '~> 2.3.4'
+gem 'rails', '~> 2.3.8'
+gem 'activesupport'
+gem 'activerecord'
+gem 'actionpack'
 require 'active_support'
 require 'active_support/test_case'
 require "active_record"
