@@ -1,25 +1,8 @@
 require File.dirname(__FILE__) + '/test_helper'
 
 TEST_ROOT       = File.expand_path(File.dirname(__FILE__))
-RAKE_MIGRATIONS_ROOT = TEST_ROOT + "/rake_migrations"
-
-
-ActiveRecord::Base.configurations = {
-  'db1' => {
-  :adapter  => 'mysql',
-  :username => 'root',
-  :encoding => 'utf8',
-  :database => 'rake_migration_test1',
-},
-'db2' => {
-  :adapter  => 'mysql',
-  :username => 'root',
-  :database => 'rake_migration_test2'
-}
-}
-
-ActiveRecord::Base.establish_connection('db1')
-
+RAKE_MIGRATIONS_ROOT = TEST_ROOT + "/../rake/migrate/"
+require File.dirname(__FILE__) + '/../models/blog'
 
 #If DB Migrations works then rake_migration will also work.
 if ActiveRecord::Base.connection.supports_migrations?
@@ -37,18 +20,76 @@ if ActiveRecord::Base.connection.supports_migrations?
     end
   end
   
-  class RakeMigrationTest < ActiveRecord::TestCase
+  class RakeMigrationTest < ActiveSupport::TestCase
 
     def setup
       ActiveRecord::RakeMigration.verbose = true
       ActiveRecord::RakeMigration.message_count = 0
+      Blog.connection.drop_table('blogs') if Blog.connection.table_exists?(:blogs)
+      Blog.connection.create_table :blogs do |t|
+        t.column :text, :text
+        t.timestamps
+      end
     end
 
-    def test_hello
-      assert true 
+    def test_migrate
+      rake_migration = ActiveRecord::RakeMigration.new(:filename => './rake/migrate/20101008114735_task_01.rb',
+                                          :version => '20101008114735')
+      rake_migration.migrate
+      assert_equal 1, Blog.count
+      assert_equal 'My first file to update system', Blog.first.text
     end
 
   end
+
+
+  class RakeMigrationProxyTest < ActiveSupport::TestCase
+
+    def setup
+      Blog.connection.drop_table('blogs') if Blog.connection.table_exists?(:blogs)
+      Blog.connection.create_table :blogs do |t|
+        t.column :text, :text
+        t.timestamps
+      end
+    end
+
+    def test_migrate
+      rake_migration = ActiveRecord::RakeMigrationProxy.new
+      rake_migration.name = 'Task01'
+      rake_migration.filename = './rake/migrate/20101008114735_task_01.rb'
+      rake_migration.version = '20101008114735'
+      rake_migration.migrate
+      assert_equal 1, Blog.count
+      assert_equal 'My first file to update system', Blog.first.text
+    end
+
+  end
+
+
+  class RakeMigratorTest < ActiveSupport::TestCase
+
+    def setup
+      Blog.connection.drop_table('blogs') if Blog.connection.table_exists?(:blogs)
+      Blog.connection.create_table :blogs do |t|
+        t.column :text, :text
+        t.timestamps
+      end
+    end
+
+    def test_run
+      ActiveRecord::RakeMigrator.run(RAKE_MIGRATIONS_ROOT,20101008114735)
+      assert_equal 1, Blog.count
+      assert_equal 'My first file to update system', Blog.first.text
+    end
+
+    def test_migrate
+      ActiveRecord::RakeMigrator.migrate(RAKE_MIGRATIONS_ROOT)
+      assert_equal 3, Blog.count
+      assert_equal 'My first file to update system', Blog.first.text
+    end
+
+  end
+
 
 end
 

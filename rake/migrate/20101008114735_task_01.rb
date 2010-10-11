@@ -1,5 +1,3 @@
-# Add your ruby code here to execute
+puts 'Run first ruby file to migrate data'
 
-
-
-puts "this is first version"
+Blog.create(:text => 'My first file to update system')

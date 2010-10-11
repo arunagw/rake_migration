@@ -1,6 +1,3 @@
-# Add your ruby code here to execute
+puts 'Run third ruby file to migrate data'
 
-
-puts  'fhdslkjfhdsfkjdsfhdsfkjdsfh'
-
-puts '______________________________________'
+Blog.create(:text => 'My third file to update system')

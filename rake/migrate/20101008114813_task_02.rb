@@ -1,3 +1,3 @@
-# Add your ruby code here to execute
+puts 'Run second ruby file to migrate data'
 
-puts "this is second version"
+Blog.create(:text => 'My second file to update system')
