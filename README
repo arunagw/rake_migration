@@ -14,7 +14,7 @@ If you working in a team environment where you forget to tell your team member t
 Installation
 ============
 
-ruby script/plugin install git@github.com:arunagw/rake_migration.git
+ruby script/plugin install git://github.com/arunagw/rake_migration.git
 
 Example
 =======
