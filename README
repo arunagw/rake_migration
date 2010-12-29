@@ -14,7 +14,15 @@ If you working in a team environment where you forget to tell your team member t
 Installation
 ============
 
-ruby script/plugin install git://github.com/arunagw/rake_migration.git
+Rails 2_x users
+================
+ruby script/plugin install git://github.com/arunagw/rake_migration.git -r 2_X
+
+
+Rails 3 
+================
+
+rails plugin install git://github.com/arunagw/rake_migration.git
 
 Example
 =======
